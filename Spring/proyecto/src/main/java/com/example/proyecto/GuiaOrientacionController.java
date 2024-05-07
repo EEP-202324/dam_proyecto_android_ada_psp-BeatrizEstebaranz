@@ -1,13 +1,17 @@
-package controller;
-
-import com.example.proyecto.Actividad;
-import com.example.proyecto.ActividadRepository;
-import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+package com.example.proyecto;
 
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/actividades")
@@ -20,21 +24,18 @@ public class GuiaOrientacionController {
         this.actividadRepository = actividadRepository;
     }
 
-    @Operation(summary = "Obtiene los detalles de una actividad por su ID")
     @GetMapping("/{actividadId}")
     public ResponseEntity<Actividad> obtenerDetallesActividad(@PathVariable Long actividadId) {
         Optional<Actividad> actividadOptional = actividadRepository.findById(actividadId);
         return actividadOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Agrega una nueva actividad")
     @PostMapping("/")
     public ResponseEntity<Actividad> agregarActividad(@RequestBody Actividad actividad) {
         Actividad nuevaActividad = actividadRepository.save(actividad);
         return ResponseEntity.ok(nuevaActividad);
     }
 
-    @Operation(summary = "Edita una actividad existente")
     @PutMapping("/{actividadId}")
     public ResponseEntity<Actividad> editarActividad(@PathVariable Long actividadId, @RequestBody Actividad actividadActualizada) {
         Optional<Actividad> actividadOptional = actividadRepository.findById(actividadId);
@@ -50,7 +51,6 @@ public class GuiaOrientacionController {
         }
     }
 
-    @Operation(summary = "Elimina una actividad por su ID")
     @DeleteMapping("/{actividadId}")
     public ResponseEntity<Void> borrarActividad(@PathVariable Long actividadId) {
         Optional<Actividad> actividadOptional = actividadRepository.findById(actividadId);
@@ -62,3 +62,4 @@ public class GuiaOrientacionController {
         }
     }
 }
+

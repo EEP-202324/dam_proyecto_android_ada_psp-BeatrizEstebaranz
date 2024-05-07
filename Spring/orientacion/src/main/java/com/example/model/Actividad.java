@@ -1,6 +1,4 @@
-package com.example.proyecto;
-
-
+package com.example.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -69,5 +67,4 @@ public class Actividad {
         this.universidad = universidad;
     }
 }
-
 
