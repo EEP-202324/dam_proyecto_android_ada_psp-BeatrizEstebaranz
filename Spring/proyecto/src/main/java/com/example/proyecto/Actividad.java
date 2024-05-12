@@ -13,9 +13,9 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "actividad")
 public class Actividad {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
     private String descripcion;
