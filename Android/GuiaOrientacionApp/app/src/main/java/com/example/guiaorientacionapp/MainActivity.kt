@@ -18,8 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.guiaorientacion.model.Actividad
-import com.example.guiaorientacion.data.ActividadDataSource
 import com.example.guiaorientacionapp.api.ApiService
 import com.example.guiaorientacionapp.model.Actividad
 import retrofit2.Response
@@ -33,4 +31,4 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-}
+
