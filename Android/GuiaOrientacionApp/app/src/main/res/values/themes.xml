@@ -2,4 +2,11 @@
 <resources>
 
     <style name="Theme.GuiaOrientacionApp" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Definir el estilo de texto para el headline -->
+    <style name="TextAppearance.App.Headline" parent="android:TextAppearance.Material.Headline">
+        <item name="android:textSize">24sp</item> <!-- Tamaño del texto -->
+        <item name="android:textStyle">bold</item> <!-- Estilo del texto (negrita) -->
+        <!-- Puedes agregar más atributos según tus preferencias -->
+    </style>
 </resources>
