@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.guiaorientacionapp.model.Actividad
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,7 +38,7 @@ val retrofit = Retrofit.Builder()
 val apiService = retrofit.create(ApiService::class.java)
 
 @Composable
-fun PantallaLista() {
+fun PantallaLista(navController: NavController) {
     // Obtener la lista de actividades de la base de datos
     val actividades = remember { mutableStateOf<List<Actividad>>(emptyList()) }
 

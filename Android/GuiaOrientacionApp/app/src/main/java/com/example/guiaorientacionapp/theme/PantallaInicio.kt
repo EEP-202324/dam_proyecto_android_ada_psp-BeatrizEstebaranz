@@ -1,6 +1,5 @@
 package com.example.guiaorientacionapp.theme
 
-
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.guiaorientacionapp.R
+import androidx.navigation.NavController
+import com.example.guiaorientacionapp.OrientacionAppBar
 
 /**
  * Composable that allows the user to select the desired cupcake quantity and expects
@@ -31,13 +32,17 @@ import com.example.guiaorientacionapp.R
  * next screen
  */
 @Composable
-fun PantallaInicio(
-    modifier: Modifier = Modifier
-) {
+fun PantallaInicio(navController: NavController) {
     Column(
-        modifier = modifier,
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+        OrientacionAppBar(
+            canNavigateBack = navController.previousBackStackEntry != null,
+            navigateUp = {
+                navController.popBackStack()
+            }
+        )
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -65,11 +70,16 @@ fun PantallaInicio(
         ) {
             BotonInicio(
                 labelResourceId = R.string.enter,
-                onClick = {}
+                onClick = {
+                    // Navega a la pantalla de listado cuando se hace clic en el botón
+                    navController.navigate("listado")
+                }
             )
         }
     }
 }
+
+
 
 /**
  * Botón personalizado que muestra el [labelResourceId]
@@ -92,5 +102,5 @@ fun BotonInicio(
 @Preview
 @Composable
 fun PantallaInicioPreview() {
-    PantallaInicio()
+  //  PantallaInicio()
 }

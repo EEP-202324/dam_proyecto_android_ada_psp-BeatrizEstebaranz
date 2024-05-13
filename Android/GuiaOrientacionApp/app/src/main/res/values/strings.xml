@@ -2,4 +2,6 @@
     <string name="app_name">GuiaOrientacionApp</string>
     <string name="enter"> Comenzar</string>
     <string name="futuro"> algo </string>
+    <string name="back_button">Atrás</string>
+
 </resources>
