@@ -1,25 +1,33 @@
 package com.example.guiaorientacionapp.api
 
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.Retrofit
+
+import retrofit2.http.GET
 import com.example.guiaorientacionapp.model.Actividad
-import retrofit2.Call
-import retrofit2.http.*
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import retrofit2.http.Url
+import kotlinx.serialization.json.Json
 
-interface ApiService {
-    @GET("/actividades/{actividadId}")
-    fun obtenerDetallesActividad(@Path("actividadId") actividadId: Long): Call<Actividad>
+    private const val BASE_URL = "https://10.0.2.2:8080"
 
-    @GET("/actividades")
-    fun obtenerActividades(): Call<List<Actividad>>
+    private val retrofit = Retrofit.Builder()
+        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .baseUrl(BASE_URL)
+        .build()
 
-    @POST("/actividades/")
-    fun agregarActividad(@Body actividad: Actividad): Call<Actividad>
 
-    @PUT("/actividades/{actividadId}")
-    fun editarActividad(
-        @Path("actividadId") actividadId: Long,
-        @Body actividadActualizada: Actividad
-    ): Call<Actividad>
+    interface ActividadApiService {
+        @GET("/actividades")
+        suspend fun obtenerActividades(): List<Actividad>
+    }
 
-    @DELETE("/actividades/{actividadId}")
-    fun borrarActividad(@Path("actividadId") actividadId: Long): Call<Void>
-}
+
+    object ActividadApi {
+        val retrofitService: ActividadApiService by lazy {
+            retrofit.create(ActividadApiService::class.java)
+        }
+    }
+
+

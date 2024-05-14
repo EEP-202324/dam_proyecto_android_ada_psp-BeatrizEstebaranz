@@ -60,14 +60,17 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.7.2") // Para convertir JSON a objetos Java (Gson es solo un ejemplo, puedes elegir otro convertidor si lo prefieres)
+
     implementation("com.squareup.okhttp3:logging-interceptor:4.2.2") // Opcional: para logs de las solicitudes HTTP
     implementation ("androidx.compose.ui:ui:1.6.7")
     implementation ("androidx.compose.material:material:1.6.7")
     implementation ("androidx.activity:activity-compose:1.9.0")
 
-    implementation("com.squareup.retrofit2:converter-gson:2.7.2")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
