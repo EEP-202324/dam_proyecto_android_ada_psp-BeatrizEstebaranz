@@ -1,4 +1,4 @@
 package com.example.guiaorientacionapp.theme
 
-class ViewModel {
+class ActividadViewModel {
 }

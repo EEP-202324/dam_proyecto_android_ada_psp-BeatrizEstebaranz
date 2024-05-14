@@ -72,7 +72,7 @@ fun PantallaInicio(navController: NavController) {
                 labelResourceId = R.string.enter,
                 onClick = {
                     // Navega a la pantalla de listado cuando se hace clic en el botón
-                    navController.navigate("listado")
+                    navController.navigate("Lista")
                 }
             )
         }

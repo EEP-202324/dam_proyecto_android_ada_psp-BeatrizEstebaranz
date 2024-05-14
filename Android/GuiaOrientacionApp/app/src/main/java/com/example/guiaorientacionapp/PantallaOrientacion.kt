@@ -27,11 +27,11 @@ fun OrientacionApp() {
     val navController = rememberNavController()
 
     // Configuración del gráfico de navegación
-    NavHost(navController, startDestination = "inicio") {
-        composable("inicio") {
+    NavHost(navController, startDestination = "Inicio") {
+        composable("Inicio") {
             PantallaInicio(navController)
         }
-        composable("listado") {
+        composable("Lista") {
             PantallaLista(navController)
         }
     }
