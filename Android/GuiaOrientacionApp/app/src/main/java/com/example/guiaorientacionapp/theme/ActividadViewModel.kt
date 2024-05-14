@@ -1,5 +1,6 @@
 package com.example.guiaorientacionapp.theme
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.guiaorientacionapp.api.ActividadApi
 import com.example.guiaorientacionapp.model.Actividad
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -38,7 +40,10 @@ class ActividadViewModel : ViewModel() {
         viewModelScope.launch {
             actividadUiState = ActividadUiState.Loading
             actividadUiState = try {
-                val listaActividades = ActividadApi.retrofitService.obtenerActividades()
+                Log.d("viewmodelLog", "antes de actividades")
+                val actividades = ActividadApi.retrofitService.obtenerActividades()
+                Log.d("viewmodelLog", actividades)
+                var listaActividades = Json.decodeFromString<List<Actividad>>(actividades)
                 ActividadUiState.Success(
                     listaActividades
                 )
@@ -49,6 +54,9 @@ class ActividadViewModel : ViewModel() {
             }
         }
     }
+
+    // var verduras = VerduleriaApi.retrofitService.getVerdurasString()
+    //var listaVerduras = Json.decodeFromString<List<Verdura>>(verduras)
 
 }
 

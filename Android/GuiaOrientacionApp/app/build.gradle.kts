@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+
+    id("kotlinx-serialization")
 }
 
 android {
@@ -79,6 +81,8 @@ dependencies {
 
 
         implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
 
 
 
