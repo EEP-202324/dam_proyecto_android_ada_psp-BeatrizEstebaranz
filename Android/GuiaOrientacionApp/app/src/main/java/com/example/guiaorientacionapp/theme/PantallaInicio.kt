@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.guiaorientacionapp.R
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.guiaorientacionapp.OrientacionAppBar
 
 /**
@@ -32,17 +33,14 @@ import com.example.guiaorientacionapp.OrientacionAppBar
  * next screen
  */
 @Composable
-fun PantallaInicio(navController: NavController) {
+fun PantallaInicio(
+    navController: NavController,
+    onNextButtonClicked: () -> Unit ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        OrientacionAppBar(
-            canNavigateBack = navController.previousBackStackEntry != null,
-            navigateUp = {
-                navController.popBackStack()
-            }
-        )
+
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -72,7 +70,7 @@ fun PantallaInicio(navController: NavController) {
                 labelResourceId = R.string.enter,
                 onClick = {
                     // Navega a la pantalla de listado cuando se hace clic en el botón
-                    navController.navigate("Lista")
+                    navController.navigate("ListaFake")
                 }
             )
         }
@@ -99,8 +97,3 @@ fun BotonInicio(
     }
 }
 
-@Preview
-@Composable
-fun PantallaInicioPreview() {
-  //  PantallaInicio()
-}

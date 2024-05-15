@@ -4,4 +4,13 @@
     <string name="futuro"> algo </string>
     <string name="back_button">Atrás</string>
 
+    <string name="act1"> Charla Universitaria de la importancia de la informatica en el sistema económico actual</string>
+    <string name="act2">Taller de Robótica Educativa para niños y jóvenes</string>
+    <string name="act3">Conferencia sobre Oportunidades Laborales en el Sector Tecnológico</string>
+    <string name="act4">Presentación de Nuevas Tecnologías en el Campo de la Educación</string>
+    <string name="act5">Seminario de Desarrollo de Aplicaciones Móviles</string>
+
+    <string name="inicio"> pantalla Inicio</string>
+    <string name="listaFake">Pantalla lista fake</string>
+    <string name="formulario">pantalla formulario</string>
 </resources>
