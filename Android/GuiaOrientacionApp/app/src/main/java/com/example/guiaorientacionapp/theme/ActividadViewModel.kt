@@ -41,22 +41,37 @@ class ActividadViewModel : ViewModel() {
             actividadUiState = ActividadUiState.Loading
             actividadUiState = try {
                 Log.d("viewmodelLog", "antes de actividades")
-                val actividades = ActividadApi.retrofitService.obtenerActividades()
-                Log.d("viewmodelLog", actividades)
-                var listaActividades = Json.decodeFromString<List<Actividad>>(actividades)
+                val listaActividades = ActividadApi.retrofitService.obtenerActividades()
+
                 ActividadUiState.Success(
                     listaActividades
                 )
             } catch (e: IOException) {
-                 ActividadUiState.Error
+                Log.e("viewmodelLog", "Error de red: ${e.message}")
+                ActividadUiState.Error
             } catch (e: HttpException) {
+                Log.e("viewmodelLog", "Error HTTP: ${e.message}")
+                ActividadUiState.Error
+            } catch (e: Exception) {
+                Log.e("viewmodelLog", "Error desconocido: ${e.message}")
                 ActividadUiState.Error
             }
         }
     }
 
+
+//    Log.d("viewmodelLog", "antes de actividades")
+//    val actividades = ActividadApi.retrofitService.obtenerActividades()
+//    Log.d("viewmodelLog", "Respuesta de la API: $actividades")
+//    var listaActividades = Json.decodeFromString<List<Actividad>>(actividades)
+//    Log.d("viewmodelLog", "Lista de actividades decodificada: $listaActividades")
+
+
+
     // var verduras = VerduleriaApi.retrofitService.getVerdurasString()
     //var listaVerduras = Json.decodeFromString<List<Verdura>>(verduras)
+
+
 
 }
 

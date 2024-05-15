@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,7 +39,7 @@ fun PantallaInicio(
     onNextButtonClicked: () -> Unit ) {
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.Center
     ) {
 
         Column(
@@ -50,7 +51,7 @@ fun PantallaInicio(
             Image(
                 painter = painterResource(R.drawable.logo),
                 contentDescription = null,
-                modifier = Modifier.width(300.dp)
+                modifier = Modifier.widthIn(max = 400.dp)
             )
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
             Text(
@@ -59,6 +60,9 @@ fun PantallaInicio(
             )
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
         }
+
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
+
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -70,30 +74,25 @@ fun PantallaInicio(
                 labelResourceId = R.string.enter,
                 onClick = {
                     // Navega a la pantalla de listado cuando se hace clic en el botón
-                    navController.navigate("ListaFake")
-                }
+                    navController.navigate("Lista")
+                },
+                modifier = Modifier.widthIn(min = 250.dp)
             )
         }
     }
 }
 
-
-
-/**
- * Botón personalizado que muestra el [labelResourceId]
- * y activa la lambda [onClick] cuando se hace clic en este componible
- */
 @Composable
 fun BotonInicio(
     @StringRes labelResourceId: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-     Button(
+    Button(
         onClick = onClick,
-        modifier = modifier.widthIn(min = 250.dp)
+        modifier = modifier.widthIn(min = 250.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
     ) {
-        Text(stringResource(labelResourceId))
+        Text(stringResource(labelResourceId), color = MaterialTheme.colorScheme.onPrimary)
     }
 }
-

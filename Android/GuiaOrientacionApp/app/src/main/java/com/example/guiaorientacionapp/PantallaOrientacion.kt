@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -37,14 +38,55 @@ import com.example.guiaorientacionapp.theme.PantallaLista
 import com.example.guiaorientacionapp.R
 import com.example.guiaorientacionapp.theme.ActividadViewModel
 import com.example.guiaorientacionapp.theme.PantallaFormulario
-import com.example.guiaorientacionapp.theme.PantallaListaFake
+
 
 enum class PantallaOrientacion(@StringRes val title: Int) {
     Inicio(title = R.string.inicio),
+    Lista(title = R.string.Lista),
     ListaFake(title = R.string.listaFake),
     Formulario(title = R.string.formulario),
 
 }
+
+//@Composable
+//fun OrientacionApp() {
+//    val navController = rememberNavController()
+//
+//    Scaffold(
+//        topBar = {
+//            OrientacionAppBar(
+//            )
+//        }
+//    ) { innerPadding ->
+//        val navBackStackEntry by navController.currentBackStackEntryAsState()
+//        val currentDestination = navBackStackEntry?.destination?.route
+//
+//        NavHost(
+//            navController = navController,
+//            startDestination = PantallaOrientacion.Inicio.name,
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(innerPadding)
+//        ) {
+//            composable(route = PantallaOrientacion.Inicio.name) {
+//                PantallaInicio(
+//                    navController = navController,
+//                    onNextButtonClicked = {
+//                        navController.navigate(PantallaOrientacion.Lista.name)
+//                    }
+//                )
+//            }
+//            composable(route = PantallaOrientacion.Lista.name) {
+//                PantallaLista(navController = navController)
+//            }
+//            composable(route = PantallaOrientacion.Formulario.name) {
+//                PantallaFormulario(navController = navController, backgroundImage = painterResource(id = R.drawable.img6))
+//            }
+//        }
+//    }
+//}
+
+
 @Composable
 fun OrientacionApp() {
     val navController = rememberNavController()
@@ -52,15 +94,12 @@ fun OrientacionApp() {
     Scaffold(
         topBar = {
             OrientacionAppBar(
-                currentScreen = PantallaOrientacion.Inicio,
+                currentScreen = getCurrentScreen(navController),
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() }
             )
         }
     ) { innerPadding ->
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination?.route
-
         NavHost(
             navController = navController,
             startDestination = PantallaOrientacion.Inicio.name,
@@ -72,17 +111,31 @@ fun OrientacionApp() {
                 PantallaInicio(
                     navController = navController,
                     onNextButtonClicked = {
-                        navController.navigate(PantallaOrientacion.ListaFake.name)
+                        navController.navigate(PantallaOrientacion.Lista.name)
                     }
                 )
             }
-            composable(route = PantallaOrientacion.ListaFake.name) {
-                PantallaListaFake(navController = navController)
+            composable(route = PantallaOrientacion.Lista.name) {
+                PantallaLista(navController = navController)
             }
             composable(route = PantallaOrientacion.Formulario.name) {
-                PantallaFormulario(navController = navController)
+                PantallaFormulario(navController = navController, backgroundImage = painterResource(id = R.drawable.img6))
             }
         }
+    }
+}
+
+@Composable
+fun getCurrentScreen(navController: NavController): PantallaOrientacion {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    return when (currentDestination?.route) {
+        PantallaOrientacion.Inicio.name -> PantallaOrientacion.Inicio
+        PantallaOrientacion.Lista.name -> PantallaOrientacion.Lista
+        PantallaOrientacion.Formulario.name -> PantallaOrientacion.Formulario
+        PantallaOrientacion.ListaFake.name -> PantallaOrientacion.ListaFake
+        else -> PantallaOrientacion.Inicio
     }
 }
 
@@ -96,7 +149,14 @@ fun OrientacionAppBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        title = { Text(stringResource(currentScreen.title)) },
+        title = {
+            when (currentScreen) {
+                PantallaOrientacion.Inicio -> Text(stringResource(R.string.inicio))
+                PantallaOrientacion.Lista -> Text(stringResource(R.string.listaBar))
+                PantallaOrientacion.Formulario -> Text(stringResource(R.string.formularioBar))
+                PantallaOrientacion.ListaFake -> Text(stringResource(R.string.listaBar))
+            }
+        },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
@@ -106,6 +166,13 @@ fun OrientacionAppBar(
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.back_button)
+                    )
+                }
+            } else {
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
                         contentDescription = stringResource(R.string.back_button)
                     )
                 }

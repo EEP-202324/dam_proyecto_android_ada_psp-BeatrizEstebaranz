@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">GuiaOrientacionApp</string>
     <string name="enter"> Comenzar</string>
-    <string name="futuro"> algo </string>
+    <string name="futuro"> Construye tu mañana hoy, cada elección es un escalón hacia tu éxito futuro</string>
     <string name="back_button">Atrás</string>
 
     <string name="act1"> Charla Universitaria de la importancia de la informatica en el sistema económico actual</string>
@@ -13,4 +13,10 @@
     <string name="inicio"> pantalla Inicio</string>
     <string name="listaFake">Pantalla lista fake</string>
     <string name="formulario">pantalla formulario</string>
+    <string name="Lista">pantalla lista buena</string>
+
+
+    <string name="listaBar">Actividades de la feria </string>
+    <string name="formularioBar">Añade una nueva actividad</string>
+
 </resources>

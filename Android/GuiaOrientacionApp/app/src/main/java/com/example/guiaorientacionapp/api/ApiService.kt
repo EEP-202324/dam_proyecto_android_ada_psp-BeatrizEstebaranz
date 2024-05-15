@@ -7,25 +7,26 @@ import com.example.guiaorientacionapp.model.Actividad
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import kotlinx.serialization.json.Json
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 //.addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
 
 
-private const val BASE_URL = "https://10.0.2.2:8080"
+private const val BASE_URL = "http://10.0.2.2:8080"
 
     private val retrofit = Retrofit.Builder()
-        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BASE_URL)
         .build()
 
 
-
-//.addConverterFactory(GsonConverterFactory.create())
+//        .addConverterFactory(ScalarsConverterFactory.create())
+//
 
     interface ActividadApiService {
         @GET("/actividades")
-        suspend fun obtenerActividades(): String// List<Actividad>
+        suspend fun obtenerActividades():  List<Actividad>
     }
 
 
