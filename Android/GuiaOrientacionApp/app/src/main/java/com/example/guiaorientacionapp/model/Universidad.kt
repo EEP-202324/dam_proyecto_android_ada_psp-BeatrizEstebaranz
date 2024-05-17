@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Universidad(
     val idUniversidad: Long?,
-    val nombreUniversidad: String
+    val nombre_universidad: String
 )

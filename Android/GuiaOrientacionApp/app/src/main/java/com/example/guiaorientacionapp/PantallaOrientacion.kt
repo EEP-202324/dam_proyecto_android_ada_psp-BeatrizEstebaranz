@@ -38,6 +38,7 @@ import com.example.guiaorientacionapp.theme.PantallaLista
 import com.example.guiaorientacionapp.R
 import com.example.guiaorientacionapp.theme.ActividadViewModel
 import com.example.guiaorientacionapp.theme.PantallaFormulario
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 enum class PantallaOrientacion(@StringRes val title: Int) {
@@ -51,6 +52,7 @@ enum class PantallaOrientacion(@StringRes val title: Int) {
 @Composable
 fun OrientacionApp() {
     val navController = rememberNavController()
+    val viewModel: ActividadViewModel = viewModel() // Obtener una instancia del ViewModel
 
     Scaffold(
         topBar = {
@@ -80,11 +82,16 @@ fun OrientacionApp() {
                 PantallaLista(navController = navController)
             }
             composable(route = PantallaOrientacion.Formulario.name) {
-                PantallaFormulario(navController = navController, backgroundImage = painterResource(id = R.drawable.img6))
+                PantallaFormulario(
+                    navController = navController,
+                    viewModel = viewModel,
+                    backgroundImage = painterResource(id = R.drawable.img6)
+                )
             }
         }
     }
 }
+
 
 @Composable
 fun getCurrentScreen(navController: NavController): PantallaOrientacion {

@@ -31,6 +31,7 @@ public class ActividadController {
 	@GetMapping("/{actividadId}")
 	public ResponseEntity<Actividad> obtenerDetallesActividad(@PathVariable Long actividadId) {
 		Optional<Actividad> actividadOptional = actividadRepository.findById(actividadId);
+		actividadOptional.get().getUniversidad();
 		return actividadOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
