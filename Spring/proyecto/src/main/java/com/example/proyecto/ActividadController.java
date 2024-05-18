@@ -66,12 +66,12 @@ public class ActividadController {
 
 	@DeleteMapping("/{actividadId}")
 	public ResponseEntity<Void> borrarActividad(@PathVariable Long actividadId) {
-		Optional<Actividad> actividadOptional = actividadRepository.findById(actividadId);
-		if (actividadOptional.isPresent()) {
-			actividadRepository.deleteById(actividadId);
-			return ResponseEntity.noContent().build();
-		} else {
-			return ResponseEntity.ok().build();
-		}
+	    Optional<Actividad> actividadOptional = actividadRepository.findById(actividadId);
+	    if (actividadOptional.isPresent()) {
+	        actividadRepository.deleteById(actividadId);
+	        return ResponseEntity.noContent().build();
+	    } else {
+	        return ResponseEntity.notFound().build(); 
+	    }
 	}
 }

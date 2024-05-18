@@ -8,6 +8,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,7 +55,11 @@ fun PantallaLista(navController: NavController) {
     if (showDialog && selectedActividad != null) {
         ActivityDetailsDialog(
             actividad = selectedActividad!!,
-            onClose = { showDialog = false }
+            onClose = { showDialog = false },
+            onDelete = {
+                viewModel.eliminarActividad(selectedActividad!!.id ?: -1)
+                showDialog = false
+            }
         )
     }
 
@@ -112,7 +117,7 @@ fun ActividadCard(actividad: Actividad, onClick: () -> Unit, modifier: Modifier 
 
 
 @Composable
-fun ActivityDetailsDialog(actividad: Actividad, onClose: () -> Unit) {
+fun ActivityDetailsDialog(actividad: Actividad, onClose: () -> Unit, onDelete: () -> Unit) {
     AlertDialog(
         onDismissRequest = onClose,
         title = {
@@ -131,6 +136,11 @@ fun ActivityDetailsDialog(actividad: Actividad, onClose: () -> Unit) {
         confirmButton = {
             Button(onClick = onClose) {
                 Text(text = "Cerrar")
+            }
+        },
+        dismissButton = {
+            IconButton(onClick = onDelete) {
+                Icon(imageVector = Icons.Default.Delete, contentDescription = "Eliminar actividad")
             }
         }
     )

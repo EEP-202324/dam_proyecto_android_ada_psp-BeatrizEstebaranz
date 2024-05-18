@@ -73,6 +73,7 @@ fun PantallaFormulario(navController: NavController, viewModel: ActividadViewMod
                     onClick = {
                         Log.e("error PantallaForm", "antes de crear act")
                         val actividad = Actividad(
+                            id = null,
                             nombre = nombre,
                             descripcion = descripcion,
                             universidad = selectedUniversidad,

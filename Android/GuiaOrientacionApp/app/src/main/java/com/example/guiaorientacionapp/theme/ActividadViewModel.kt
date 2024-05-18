@@ -108,6 +108,22 @@ class ActividadViewModel : ViewModel() {
         }
     }
 
+    fun eliminarActividad(actividadId: Long) {
+        viewModelScope.launch {
+            try {
+                ActividadApi.retrofitService.eliminarActividad(actividadId)
+                obtenerActividades()  // Actualizar la lista de actividades después de la eliminación
+            } catch (e: IOException) {
+                Log.e("ActividadViewModel", "Error de red: ${e.message}")
+            } catch (e: HttpException) {
+                Log.e("ActividadViewModel", "Error HTTP: ${e.message}")
+            } catch (e: Throwable) {
+                Log.e("ActividadViewModel", "Error desconocido: ${e.message}")
+            }
+        }
+    }
+
+
 }
 
 
