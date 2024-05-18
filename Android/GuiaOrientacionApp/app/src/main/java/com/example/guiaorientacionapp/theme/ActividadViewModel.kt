@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.guiaorientacionapp.api.ActividadApi
+import com.example.guiaorientacionapp.api.ActividadApiService
 import com.example.guiaorientacionapp.api.UniversidadApi
 import com.example.guiaorientacionapp.model.Actividad
 import com.example.guiaorientacionapp.model.Universidad
@@ -93,6 +94,20 @@ class ActividadViewModel : ViewModel() {
     fun onUniversidadSelected(universidad: Universidad) {
         _selectedUniversidad.value = universidad
     }
+
+    suspend fun getActividadById(actividadId: Long): Result<Actividad> {
+        return try {
+            val response = ActividadApi.retrofitService.getActividadById(actividadId)
+            if (response.isSuccessful) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(RuntimeException("Failed to get actividad by ID: ${response.code()} ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }
 
 

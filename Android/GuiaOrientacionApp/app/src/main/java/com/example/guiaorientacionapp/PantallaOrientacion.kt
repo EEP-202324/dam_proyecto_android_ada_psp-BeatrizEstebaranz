@@ -76,6 +76,7 @@ fun OrientacionApp() {
                     onNextButtonClicked = {
                         navController.navigate(PantallaOrientacion.Lista.name)
                     }
+
                 )
             }
             composable(route = PantallaOrientacion.Lista.name) {

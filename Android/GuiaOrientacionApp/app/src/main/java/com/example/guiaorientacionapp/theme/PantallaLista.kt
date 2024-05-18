@@ -1,36 +1,20 @@
 package com.example.guiaorientacionapp.theme
 
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
-import androidx.compose.material.Card
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.guiaorientacionapp.model.Actividad
-
 @Composable
 fun PantallaLista(navController: NavController) {
     // Obtener el ViewModel
@@ -44,6 +28,9 @@ fun PantallaLista(navController: NavController) {
     // Obtener el estado de la UI del ViewModel
     val uiState = viewModel.actividadUiState
 
+    var showDialog by remember { mutableStateOf(false) }
+    var selectedActividad by remember { mutableStateOf<Actividad?>(null) }
+
     // Renderizar la lista de actividades basada en el estado de la UI
     when (uiState) {
         is ActividadUiState.Loading -> {
@@ -52,13 +39,26 @@ fun PantallaLista(navController: NavController) {
         }
         is ActividadUiState.Success -> {
             // Muestra la lista de actividades obtenidas del estado
-            ActividadList(actividades = uiState.activities)
+            ActividadList(actividades = uiState.activities, onActividadClick = { actividad ->
+                selectedActividad = actividad
+                showDialog = true
+            })
         }
         is ActividadUiState.Error -> {
             // Muestra un mensaje de error
             Text(text = "Error al cargar actividades")
         }
     }
+
+    // Mostrar el diálogo si hay una actividad seleccionada
+    if (showDialog && selectedActividad != null) {
+        ActivityDetailsDialog(
+            actividad = selectedActividad!!,
+            onClose = { showDialog = false }
+        )
+    }
+
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -70,46 +70,70 @@ fun PantallaLista(navController: NavController) {
                 // Navega a la pantalla de formulario cuando se hace clic en el botón
                 navController.navigate("Formulario")
             },
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp).align(Alignment.End)
         ) {
-            androidx.compose.material3.Text(text = "Ir al formulario")
+            Icon(
+                imageVector = Icons.Filled.Add,
+                contentDescription = "Ir al formulario"
+            )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+
 
     }
 }
 
 @Composable
-fun ActividadList(actividades: List<Actividad>) {
+fun ActividadList(actividades: List<Actividad>, onActividadClick: (Actividad) -> Unit) {
     LazyColumn {
         items(actividades) { actividad ->
             ActividadCard(
                 actividad = actividad ,
-                modifier = Modifier.padding(8.dp))
+                modifier = Modifier.padding(8.dp),
+                onClick = { onActividadClick(actividad) }
+            )
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun ActividadCard(actividad: Actividad, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Card(modifier = modifier,  onClick = onClick) {
+        Column {
+            Text(
+                text = actividad.nombre,
+                modifier = Modifier.padding(16.dp),
+
+            )
         }
     }
 }
 
 
 @Composable
-fun ActividadCard(actividad: Actividad, modifier: Modifier = Modifier) {
-    androidx.compose.material3.Card(modifier = modifier) {
-        Column {
-//            Image(
-//                painter = painterResource(actividad.imageResourceId),
-//                contentDescription = stringResource(actividad.stringResourceId),
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(194.dp),
-//                contentScale = ContentScale.Crop
-//            )
-            androidx.compose.material3.Text(
-                text = actividad.nombre,
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.headlineSmall
-            )
+fun ActivityDetailsDialog(actividad: Actividad, onClose: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onClose,
+        title = {
+            Text(text = "Detalles de la Actividad")
+        },
+        text = {
+            Column {
+                Text(text = actividad.nombre, style = MaterialTheme.typography.titleLarge)
+                Text(text = actividad.descripcion, style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    text = actividad.universidad?.nombre_universidad ?: "No university",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = onClose) {
+                Text(text = "Cerrar")
+            }
         }
-    }
+    )
 }
 
 
