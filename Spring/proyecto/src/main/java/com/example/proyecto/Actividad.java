@@ -22,7 +22,7 @@ public class Actividad {
     private String descripcion;
     
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "universidad_id")
+    @JoinColumn(name = "id_universidad")
     private Universidad universidad;
 
     // Constructor vacío
