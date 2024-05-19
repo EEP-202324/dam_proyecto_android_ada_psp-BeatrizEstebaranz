@@ -9,9 +9,11 @@ import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -21,15 +23,17 @@ fun PantallaLista(navController: NavController) {
     // Obtener el ViewModel
     val viewModel: ActividadViewModel = viewModel()
 
-    // Lanzar el efecto cuando el componente se inicializa
+    // Lanzar el efecto automaticamente cuando el componente se inicializa
     LaunchedEffect(key1 = true) {
         viewModel.obtenerActividades()
     }
 
-    // Obtener el estado de la UI del ViewModel
+    // Obtener el estado de la UI del ViewModel(cargando, cargado o error)
     val uiState = viewModel.actividadUiState
 
+    // variables de estado que controlan la visibilidad de dialogos y de actividad select
     var showDialog by remember { mutableStateOf(false) }
+    var showEditDialog by remember { mutableStateOf(false) }
     var selectedActividad by remember { mutableStateOf<Actividad?>(null) }
 
     // Renderizar la lista de actividades basada en el estado de la UI
@@ -52,13 +56,28 @@ fun PantallaLista(navController: NavController) {
     }
 
     // Mostrar el diálogo si hay una actividad seleccionada
-    if (showDialog && selectedActividad != null) {
+    if (showDialog && selectedActividad != null) { // si se ha selecccionado una actividad y esta no es nula
         ActivityDetailsDialog(
             actividad = selectedActividad!!,
             onClose = { showDialog = false },
             onDelete = {
                 viewModel.eliminarActividad(selectedActividad!!.id ?: -1)
+                showDialog = false // oculta el dialogo
+            },
+            onEdit = {
                 showDialog = false
+                showEditDialog = true
+            }
+        )
+    }
+
+    if (showEditDialog && selectedActividad != null) {
+        EditActividadDialog(
+            actividad = selectedActividad!!,
+            onClose = { showEditDialog = false },
+            onSave = { actividadActualizada ->
+                viewModel.editarActividad(actividadActualizada)
+                showEditDialog = false
             }
         )
     }
@@ -67,7 +86,7 @@ fun PantallaLista(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Bottom
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         Button(
@@ -87,13 +106,13 @@ fun PantallaLista(navController: NavController) {
     }
 }
 
-@Composable
+@Composable // recibe lista de actividades y lambda que se ejecuta cuando se hace click
 fun ActividadList(actividades: List<Actividad>, onActividadClick: (Actividad) -> Unit) {
     LazyColumn {
         items(actividades) { actividad ->
             ActividadCard(
                 actividad = actividad ,
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier.padding(10.dp),
                 onClick = { onActividadClick(actividad) }
             )
         }
@@ -107,7 +126,7 @@ fun ActividadCard(actividad: Actividad, onClick: () -> Unit, modifier: Modifier 
     Card(modifier = modifier,  onClick = onClick) {
         Column {
             Text(
-                text = actividad.nombre,
+                text = actividad.nombre ?: "",
                 modifier = Modifier.padding(16.dp),
 
             )
@@ -117,7 +136,12 @@ fun ActividadCard(actividad: Actividad, onClick: () -> Unit, modifier: Modifier 
 
 
 @Composable
-fun ActivityDetailsDialog(actividad: Actividad, onClose: () -> Unit, onDelete: () -> Unit) {
+fun ActivityDetailsDialog(
+    actividad: Actividad,
+    onClose: () -> Unit,
+    onDelete: () -> Unit,
+    onEdit: () -> Unit
+) {
     AlertDialog(
         onDismissRequest = onClose,
         title = {
@@ -125,7 +149,7 @@ fun ActivityDetailsDialog(actividad: Actividad, onClose: () -> Unit, onDelete: (
         },
         text = {
             Column {
-                Text(text = actividad.nombre, style = MaterialTheme.typography.titleLarge)
+                Text(text = actividad.nombre, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                 Text(text = actividad.descripcion, style = MaterialTheme.typography.bodyLarge)
                 Text(
                     text = actividad.universidad?.nombre_universidad ?: "No university",
@@ -139,11 +163,64 @@ fun ActivityDetailsDialog(actividad: Actividad, onClose: () -> Unit, onDelete: (
             }
         },
         dismissButton = {
-            IconButton(onClick = onDelete) {
-                Icon(imageVector = Icons.Default.Delete, contentDescription = "Eliminar actividad")
+            Row {
+                IconButton(onClick = onDelete) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Eliminar actividad")
+                }
+                IconButton(onClick = onEdit) {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Editar actividad")
+                }
             }
         }
     )
 }
+
+@Composable
+fun EditActividadDialog(
+    actividad: Actividad,
+    onClose: () -> Unit,
+    onSave: (Actividad) -> Unit
+) {
+    var nombre by remember { mutableStateOf(actividad.nombre) } //La variable se inicializa con el nombre de la actividad pasada como parámetro.
+    var descripcion by remember { mutableStateOf(actividad.descripcion) }
+
+    AlertDialog(
+        onDismissRequest = onClose,
+        title = {
+            Text(text = "Editar Actividad")
+        },
+        text = {
+            Column {
+                TextField(
+                    value = nombre,
+                    onValueChange = { nombre = it },
+                    label = { Text("Nombre") }
+                )
+                TextField(
+                    value = descripcion,
+                    onValueChange = { descripcion = it },
+                    label = { Text("Descripción") }
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    val actividadActualizada = actividad.copy(nombre = nombre, descripcion = descripcion)
+                    onSave(actividadActualizada)
+                }
+            ) {
+                Text(text = "Guardar")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onClose) {
+                Text(text = "Cancelar")
+            }
+        }
+    )
+}
+
+
 
 

@@ -13,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 
@@ -22,6 +23,10 @@ import retrofit2.http.Path
 private const val BASE_URL = "http://10.0.2.2:8080"
 //"http://10.0.2.2:8080"
 
+
+// Configuración de Retrofit
+// Se crea una instancia de Retrofit con la URL base del servidor.
+// Se utiliza el convertidor Gson para procesar los datos JSON recibidos del servidor.
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BASE_URL)
@@ -45,6 +50,9 @@ private const val BASE_URL = "http://10.0.2.2:8080"
         @DELETE("/actividades/{actividadId}")
         suspend fun eliminarActividad(@Path("actividadId") actividadId: Long)
 
+        @PUT("/actividades/{actividadId}")
+        suspend fun editarActividad(@Path("actividadId") actividadId: Long, @Body actividad: Actividad): Response<Actividad>
+
 
     }
 
@@ -52,6 +60,11 @@ interface UniversidadApiService {
     @GET("/universidades")
     suspend fun obtenerUniversidades(): List<Universidad>
 }
+
+
+
+// ActividadApi y UniversidadApi son objetos singleton que proporcionan acceso al servicio Retrofit correspondiente.
+// Estos objetos tienen un atributo retrofitService que permite llamar a los métodos definidos en las interfaces de servicio.
 
     object ActividadApi {
         val retrofitService: ActividadApiService by lazy {

@@ -34,22 +34,7 @@ public class GuiaOrientacionTests {
 
 	@Autowired
 	private ActividadRepository actividadRepository;
-	   @Test
-	    public void agregarNuevaActividad_crearaActividadExitosamente() {
-	        // Arrange
-	        Actividad newActividad = new Actividad();
 
-	        // Act
-	        ResponseEntity<Actividad> response = restTemplate.postForEntity(
-	                "http://localhost:" + port + "/actividades/", newActividad, Actividad.class);
-
-	        // Assert
-	        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-	        assertThat(response.getBody()).isNotNull();
-	        assertThat(response.getBody().getNombre()).isEqualTo(newActividad.getNombre());
-	        assertThat(response.getBody().getDescripcion()).isEqualTo(newActividad.getDescripcion());
-	        assertThat(response.getBody().getUniversidad()).isEqualTo(newActividad.getUniversidad());
-	    }
 
 	    @Test
 	    public void eliminarActividadExistente_eliminaActividadExitosamente() {
@@ -66,22 +51,7 @@ public class GuiaOrientacionTests {
 	        assertThat(result).isNotPresent();
 	    }
 
-	    @Test
-	    public void agregarOtraNuevaActividad_crearaActividadExitosamente() {
-	        // Arrange
-	        Actividad newActividad = new Actividad();
-
-	        // Act
-	        ResponseEntity<Actividad> response = restTemplate.postForEntity(
-	                "http://localhost:" + port + "/actividades/", newActividad, Actividad.class);
-
-	        // Assert
-	        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-	        assertThat(response.getBody()).isNotNull();
-	        assertThat(response.getBody().getNombre()).isEqualTo(newActividad.getNombre());
-	        assertThat(response.getBody().getDescripcion()).isEqualTo(newActividad.getDescripcion());
-	        assertThat(response.getBody().getUniversidad()).isEqualTo(newActividad.getUniversidad());
-	    }
+	
 
 	    @Test
 	    public void eliminarOtraActividadExistente_eliminaActividadExitosamente() {

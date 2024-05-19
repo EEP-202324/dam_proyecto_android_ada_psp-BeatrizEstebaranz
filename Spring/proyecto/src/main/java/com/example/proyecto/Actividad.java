@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 public class Actividad {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // id es generado automaticamente por la base de datos
     private Long id;
     private String nombre;
     private String descripcion;

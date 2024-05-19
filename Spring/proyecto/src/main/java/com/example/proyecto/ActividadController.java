@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/actividades")
+@RestController //indica que maneja solicitudes REST
+@RequestMapping("/actividades") //establece la ruta base para todas las solicitudes que se gestionarán en este controlador.
 public class ActividadController {
 
 	private final ActividadRepository actividadRepository;

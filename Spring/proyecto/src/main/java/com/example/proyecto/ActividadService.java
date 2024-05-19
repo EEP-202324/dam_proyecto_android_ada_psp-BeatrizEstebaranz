@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service // indica que esta clase es un servicio de Spring
 public class ActividadService {
 
     private final ActividadRepository actividadRepository;
@@ -26,7 +26,7 @@ public class ActividadService {
             return ResponseEntity.badRequest().body(null); // O devuelve un error adecuado
         }
 
-        // Establecer la universidad en la actividad (puede que ya esté establecida, dependiendo de cómo se recibe la actividad)
+        // Establecer la universidad en la actividad 
         actividad.setUniversidad(universidadOptional.get());
 
         // Guardar la actividad en la base de datos

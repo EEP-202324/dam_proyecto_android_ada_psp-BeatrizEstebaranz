@@ -15,22 +15,31 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
+
+// Esta interfaz sellada define los diferentes estados posibles del UI relacionado con las actividades.
 sealed interface ActividadUiState {
     data class Success(val activities: List<Actividad>) : ActividadUiState
     object Error : ActividadUiState
     object Loading : ActividadUiState
 }
 
+
+// ViewModel encargado de manejar la lógica de la pantalla de actividades.
 class ActividadViewModel : ViewModel() {
+
+    // Estado actual del UI de actividades
     var actividadUiState: ActividadUiState by mutableStateOf(ActividadUiState.Loading)
         private set
 
+    // Estado del universidad seleccionado
     private val _selectedUniversidad = mutableStateOf<Universidad?>(null)
     val selectedUniversidad: Universidad? get() = _selectedUniversidad.value
 
+    // Lista de universidades
     private val _universidades = mutableStateOf<List<Universidad>>(emptyList())
     val universidades: List<Universidad> get() = _universidades.value
 
+    // Inicialización del ViewModel
     init {
         obtenerActividades()
         obtenerUniversidades()
@@ -122,18 +131,19 @@ class ActividadViewModel : ViewModel() {
             }
         }
     }
+    fun editarActividad(actividad: Actividad) {
+        viewModelScope.launch {
+            try {
+                ActividadApi.retrofitService.editarActividad(actividad.id ?: -1, actividad)
+                obtenerActividades()
+            } catch (e: IOException) {
+                // Manejo del error
+            } catch (e: HttpException) {
+                // Manejo del error
+            }
+        }
+    }
 
 
 }
 
-
-//    Log.d("viewmodelLog", "antes de actividades")
-//    val actividades = ActividadApi.retrofitService.obtenerActividades()
-//    Log.d("viewmodelLog", "Respuesta de la API: $actividades")
-//    var listaActividades = Json.decodeFromString<List<Actividad>>(actividades)
-//    Log.d("viewmodelLog", "Lista de actividades decodificada: $listaActividades")
-
-
-
-// var verduras = VerduleriaApi.retrofitService.getVerdurasString()
-//var listaVerduras = Json.decodeFromString<List<Verdura>>(verduras)

@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UniversidadRepository extends JpaRepository<Universidad, Long> {
-	 @Query("SELECT u.nombre_universidad FROM Universidad u WHERE u.id_universidad = :id")
+	 @Query("SELECT u.nombre_universidad FROM Universidad u WHERE u.id_universidad = :id") //consulta busca el nombre de la universidad por su ID
 	    Optional<String> findNombreUniversidadById_universidad(@Param("id") Long id);
 }
