@@ -11,7 +11,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // Renderiza la aplicación principal
+            // Renderiza la aplicación principal de oantalla orienracion
             OrientacionApp()
         }
     }

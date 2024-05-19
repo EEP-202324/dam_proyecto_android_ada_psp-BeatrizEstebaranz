@@ -51,25 +51,25 @@ enum class PantallaOrientacion(@StringRes val title: Int) {
 
 @Composable
 fun OrientacionApp() {
-    val navController = rememberNavController()
+    val navController = rememberNavController() // se inicializa el controlador de navegacion
     val viewModel: ActividadViewModel = viewModel() // Obtener una instancia del ViewModel
 
     Scaffold(
         topBar = {
             OrientacionAppBar(
                 currentScreen = getCurrentScreen(navController),
-                canNavigateBack = navController.previousBackStackEntry != null,
+                canNavigateBack = navController.previousBackStackEntry != null,// se obtiene el estado actual para sis e puede o no ir atras
                 navigateUp = { navController.navigateUp() }
             )
         }
-    ) { innerPadding ->
-        NavHost(
+    ) { innerPadding -> // ajusta el contenido principal dentro del scaffold
+        NavHost( // contenedor de las pantallas
             navController = navController,
             startDestination = PantallaOrientacion.Inicio.name,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-        ) {
+        ) { // definimos la composicion de la pantalla de inicio
             composable(route = PantallaOrientacion.Inicio.name) {
                 PantallaInicio(
                     navController = navController,
@@ -94,16 +94,17 @@ fun OrientacionApp() {
 }
 
 
-@Composable
+@Composable // toma el navcontroller y devulve un ainstancia de panallaorientacion(pantallaactual)
 fun getCurrentScreen(navController: NavController): PantallaOrientacion {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()// obitienes el estado actual de la pila de navegacion
     val currentDestination = navBackStackEntry?.destination
 
+    //determinar qué pantalla se está mostrando actualmente según la ruta de destino
     return when (currentDestination?.route) {
         PantallaOrientacion.Inicio.name -> PantallaOrientacion.Inicio
         PantallaOrientacion.Lista.name -> PantallaOrientacion.Lista
         PantallaOrientacion.Formulario.name -> PantallaOrientacion.Formulario
-        PantallaOrientacion.ListaFake.name -> PantallaOrientacion.ListaFake
+
         else -> PantallaOrientacion.Inicio
     }
 }

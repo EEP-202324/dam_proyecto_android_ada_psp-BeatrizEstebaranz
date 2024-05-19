@@ -23,12 +23,14 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 
 @Composable
 fun PantallaFormulario(navController: NavController, viewModel: ActividadViewModel, backgroundImage: Painter = painterResource(id = R.drawable.img6)) {
+
+    // variables para almacenar la info, aqui se inicializan
     val (nombre, onNombreChange) = remember { mutableStateOf("") }
     val (descripcion, onDescripcionChange) = remember { mutableStateOf("") }
     val universidades = remember { mutableStateListOf<Universidad>() }
     var selectedUniversidad by remember { mutableStateOf<Universidad?>(null) }
 
-    Box(
+    Box(// permite superponer elementos
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
@@ -36,15 +38,15 @@ fun PantallaFormulario(navController: NavController, viewModel: ActividadViewMod
             painter = backgroundImage,
             contentDescription = "Background image",
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop // resorta la imagen si es necesario
         )
-        Card(
+        Card( // contenedor con sobra para los elementos
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp, vertical = 60.dp),
             elevation = CardDefaults.cardElevation(16.dp)
         ) {
-            Column(
+            Column( // para organizar los elementos del formulario con espacio entre ellos
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -60,7 +62,7 @@ fun PantallaFormulario(navController: NavController, viewModel: ActividadViewMod
                     label = { Text("Descripción") },
                     modifier = Modifier.fillMaxWidth()
                 )
-                UniversidadDropdownMenu(
+                UniversidadDropdownMenu(// menu desplegable de unis basado en lalista proporcionada por el viewmodel
                     universidades = viewModel.universidades,
                     selectedUniversidad = selectedUniversidad,
                     onUniversidadSelected = { universidad ->
@@ -70,7 +72,7 @@ fun PantallaFormulario(navController: NavController, viewModel: ActividadViewMod
                 )
 
                 Button(
-                    onClick = {
+                    onClick = { // crea una nueva intancia de actividad
                         Log.e("error PantallaForm", "antes de crear act")
                         val actividad = Actividad(
                             id = null,
@@ -95,7 +97,7 @@ fun PantallaFormulario(navController: NavController, viewModel: ActividadViewMod
 @Composable
 fun UniversidadDropdownMenu(
     universidades: List<Universidad>,
-    selectedUniversidad: Universidad?,
+    selectedUniversidad: Universidad?,// puede ser nula
     onUniversidadSelected: (Universidad) -> Unit
 ) {
     Box(
